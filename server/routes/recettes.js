@@ -5,7 +5,7 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
  
-router.get('/fatch_all',auth, getRecetteByUserId)
+router.get('/fetch_all',auth, getRecetteByUserId)
 
 router.delete('/delete/:id',auth, deleteRecetteById );
 

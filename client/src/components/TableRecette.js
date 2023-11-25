@@ -4,7 +4,7 @@ import Highlighter from 'react-highlight-words';
 import { Avatar, Button, Input, Space, Table, Tag } from 'antd';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
-import { FaEye } from 'react-icons/fa';
+
 
 
 const TableRecette = ({data,setData,isLoading,handledeleteRecette,handleUpdateRecette }) => {
@@ -140,10 +140,11 @@ const TableRecette = ({data,setData,isLoading,handledeleteRecette,handleUpdateRe
 
 
     const columns = [
+        //nom ingredients etapes duree photo user
         {
-            title: 'Profil',
-            dataIndex: 'profil',
-            key: 'profil',
+            title: 'Image',
+            dataIndex: 'photo',
+            key: 'photo',
             // responsive: ['md'],
             render: (text, record, index) =>(
                 <div>
@@ -169,62 +170,47 @@ const TableRecette = ({data,setData,isLoading,handledeleteRecette,handleUpdateRe
             // responsive: ['md'],
         },
         {
-            title: 'Prenom',
-            dataIndex: 'prenom',
-            key: 'prenom',
-            // width: '10%',
-            ...getColumnSearchProps('prenom'),
-            sorter: (a, b) => a.prenom - b.prenom,
-            sortDirections: ['descend', 'ascend'],
+            title: 'Ingredients',
+            dataIndex: 'ingredients',
+            key: 'ingredients',
             // responsive: ['sm'],
+            render: (text, record, index) => (
+               <span>
+                 {
+                    record.map((index ,item)=>  (
+                            <Tag key={index} className='cursor-pointer hover:bg-red-700 hover:text-white' color='error' >{item} </Tag>)
+                    )
+                 }
+               </span>
+            ),
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Etapes',
+            dataIndex: 'etapes',
+            key: 'etapes',
+            // responsive: ['sm'],
+            render: (text, record, index) => (
+               <span>
+                 {
+                    record.map((index ,item)=>  (
+                            <Tag key={index} className='cursor-pointer hover:bg-red-700 hover:text-white' color='cyan-inverse' >{item} </Tag>)
+                    )
+                 }
+               </span>
+            ),
+        },
+        {
+            title: 'duree',
+            dataIndex: 'duree',
+            key: 'duree',
          
-            ...getColumnSearchProps('age'),
-            sorter: (a, b) => a.age - b.age,
+            ...getColumnSearchProps('duree'),
+            sorter: (a, b) => a.duree - b.duree,
             sortDirections: ['descend', 'ascend'],
             // responsive: ['md'],
 
         },
-        {
-            title: 'Sexe',
-            dataIndex: 'sexe',
-            key: 'sexe',
-         
-            ...getColumnSearchProps('sexe'),
-            sorter: (a, b) => a.sexe - b.sexe,
-            sortDirections: ['descend', 'ascend'],
-            // responsive: ['md'],
-
-        },
-        {
-            title: 'Telephone',
-            dataIndex: 'telephone',
-            key: 'telephone',
-            ...getColumnSearchProps('telephone'),
-            sorter: (a, b) => a.telephone - b.telephone,
-            sortDirections: ['descend', 'ascend'],
-            // responsive: ['lg'],
-        },
-        {
-            title: 'Adresse',
-            dataIndex: 'adresse',
-            key: 'adresse',
-            width: 150,
-            
-            ...getColumnSearchProps('adresse'),
-            sorter: (a, b) => a.adresse.length - b.adresse.length,
-            sortDirections: ['descend', 'ascend'],
-            // responsive: ['sm','md'],
-            render: (text, record) => (
-                <div className='text-xs' style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
-                  {text?.length >= 30 ? text.slice(0, 30)+ "..." : text}
-                </div>
-              ),
-        },
+       
         {
             title: 'Action',
             key: 'action',
@@ -236,20 +222,7 @@ const TableRecette = ({data,setData,isLoading,handledeleteRecette,handleUpdateRe
                </span>
             ),
         }
-        ,
-        {
-            title: 'Dossier Medical',
-            key: 'dossier_medical',
-            // width : 100,
-            // responsive: ['sm'],
-            render: (text, record, index) => (
-               <span>
-                 {/* <Tag className='cursor-pointer hover:bg-blue-700 hover:text-white flex flex-row items-center justify-center space-x-2 w-[50%]' color='blue' icon={<FaEye/>} onClick={()=> { navigate(`${MEDICAL_FOLDER}/${record.id}`)}}>See</Tag> */}
-               </span>
-            ),
-        }
-
-
+    
     ];
     return <Table columns={columns} dataSource={data} pagination={tableParams.pagination}
        scroll={{ x: "max-content"}}

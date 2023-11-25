@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { addRecette ,deleteRecetteById , updateRecette , getRecettesByUser } from '../actions/patients'
 import { useDispatch, useSelector } from 'react-redux'
 import PageIcon from '../components/PageIcon'
 import { BsHeartPulseFill } from 'react-icons/bs'
-import { Modal, Radio } from 'antd'
+import { Button, Modal, Radio, Upload } from 'antd'
 import { MdAdd } from 'react-icons/md'
 import CustomInput from '../components/CustomInput'
 import Swal from 'sweetalert2'
@@ -11,12 +11,16 @@ import {  getUserFromJWT } from '../utils/User';
 import { useNavigate } from 'react-router-dom'
 import TableRecette from '../components/TableRecette'
 import { deleteRecetteByID } from '../api'
+import { FaUpload } from 'react-icons/fa'
+import ImgCrop from 'antd-img-crop';
+
 
 function Home() {
   const navigate = useNavigate();
   const user = getUserFromJWT()
   const dispatch = useDispatch()
-  const handledeletePatient = (id) => {
+  const uploadRef = useRef()
+  const handledeleteRecette = (id) => {
     Swal.fire({
       title: "Vous voulez Poursuivre l'operation?",
       // showDenyButton: true,
@@ -31,7 +35,7 @@ function Home() {
     
   }
 
-  const handleUpdatePatient = (recette) => {
+  const handleUpdateRecette = (recette) => {
   
     setCurrentID(recette?.id)
     setAddFlag(false)
@@ -179,7 +183,7 @@ function Home() {
     }
 
     return (
-      <div className='bg-slate-200 '>
+      <div className=' p-10'>
         {/* <div className='md:w-[600px] lg:w-[720px] xl:w-full'> */}
         <div className='mb-10 flex flex-row justify-between items-center'>
           <PageIcon icon={<BsHeartPulseFill />} />
@@ -204,21 +208,51 @@ function Home() {
           }}
         >
           <div className='grid grid-cols-2 gap-6 max-sm:grid-cols-1 mt-4 items-center'>
-            <CustomInput type="text" placeholder="Nom *" name="nom" value={formData.nom} onChange={handleFormChange} isError={formDataError.nomError} messageError='nom est requis' />
-            <CustomInput type="text" placeholder="Prenom *" name="prenom" value={formData.prenom} onChange={handleFormChange} isError={formDataError.prenomError} messageError='prenom est requis' />
-            <CustomInput type="number" placeholder="Age" name="age" max={150} min={0} value={formData.age} onChange={handleFormChange} isError={formDataError.ageError} messageError='age est requis' />
-            <CustomInput type="text" placeholder="Telephone *" name="telephone" value={formData.telephone} onChange={handleFormChange} />
-            <CustomInput type="text" placeholder="Adresse" name="adresse" value={formData.adresse} onChange={handleFormChange} />
-            <Radio.Group name='sexe' onChange={handleFormChange} value={formData.sexe} >
-              <Radio value="M">Homme</Radio>
-              <Radio value="F">Femme</Radio>
-            </Radio.Group>
+            <CustomInput type="text" placeholder="Nom *" name="nom" value={formData.nom} onChange={handleFormChange}  />
+            <CustomInput type="text" placeholder="duree" name="duree" max={150} min={0} value={formData.duree} onChange={handleFormChange}  />
+            <CustomInput type="text" placeholder="etapes" name="etapes" value={formData.etapes}  label="etapes (coma separated)"  onChange={(e) => setFormData({ ...formData, etapes: e.target.value.split(',') })} />
+            <CustomInput type="text" placeholder="ingredients" name="ingredients" value={formData.adresse}  label="Ingredients (coma separated)"  onChange={(e) => setFormData({ ...formData, ingredients: e.target.value.split(',') })} />
            
+
+            <ImgCrop rotationSlider modalProps={{
+              okButtonProps: {
+                className: "bg-[#0069e9] hover:bg-[#519efb]"
+              }
+            }}  >
+
+              <Upload multiple={false} maxCount={1}
+                ref={uploadRef}
+                accept='.png,.jpg,.jpeg'
+                fileList={formData.files}
+                listType="picture"
+                onChange={  (info) => {
+                  if(info.file.status == "removed"){
+                    handleRemoveFile()
+                  }
+                  else {
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      files: [info.file],
+                    }));
+  
+                  }
+
+
+                }}
+
+                customRequest={({ file, onSuccess }) => {
+                  onSuccess()
+                }}
+              // the base64 image is in thumb url
+              >
+                <Button icon={<FaUpload />} >{!isAddFlag && formData.profil ? "Changer " : "Upload une "} photo de profil</Button>
+              </Upload>
+            </ImgCrop>
 
           </div>
         </Modal>
 
-        <TableRecette data={recettes} isLoading={isLoading} handledeletePatient={handledeletePatient} handleUpdatePatient={handleUpdatePatient} />
+        <TableRecette data={recettes} isLoading={isLoading} handleUpdateRecette={handleUpdateRecette} handledeleteRecette={handledeleteRecette} />
       </div>
     )
   }
