@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { addRecette ,deleteRecetteById , updateRecette , getRecettesByUser } from '../actions/patients'
 import { useDispatch, useSelector } from 'react-redux'
 import PageIcon from '../components/PageIcon'
-import { BsHeartPulseFill } from 'react-icons/bs'
+
+
 import { Button, Modal, Radio, Upload } from 'antd'
 import { MdAdd } from 'react-icons/md'
 import CustomInput from '../components/CustomInput'
@@ -13,6 +14,7 @@ import TableRecette from '../components/TableRecette'
 import { deleteRecetteByID } from '../api'
 import { FaUpload } from 'react-icons/fa'
 import ImgCrop from 'antd-img-crop';
+import { IoFastFood } from "react-icons/io5";
 
 
 function Home() {
@@ -186,7 +188,7 @@ function Home() {
       <div className=' p-10'>
         {/* <div className='md:w-[600px] lg:w-[720px] xl:w-full'> */}
         <div className='mb-10 flex flex-row justify-between items-center'>
-          <PageIcon icon={<BsHeartPulseFill />} />
+          <PageIcon icon={<IoFastFood />} />
           <button className='flex flex-row items-center justify-between text-sm text-white bg-[#0069e9] hover:bg-[#519efb] p-1.5 px-2.5 rounded-md' onClick={showModal}  >
             <MdAdd className='' />
             <span>Ajouter</span>
@@ -210,8 +212,8 @@ function Home() {
           <div className='grid grid-cols-2 gap-6 max-sm:grid-cols-1 mt-4 items-center'>
             <CustomInput type="text" placeholder="Nom *" name="nom" value={formData.nom} onChange={handleFormChange}  />
             <CustomInput type="text" placeholder="duree" name="duree" max={150} min={0} value={formData.duree} onChange={handleFormChange}  />
-            <CustomInput type="text" placeholder="etapes" name="etapes" value={formData.etapes}  label="etapes (coma separated)"  onChange={(e) => setFormData({ ...formData, etapes: e.target.value.split(',') })} />
-            <CustomInput type="text" placeholder="ingredients" name="ingredients" value={formData.adresse}  label="Ingredients (coma separated)"  onChange={(e) => setFormData({ ...formData, ingredients: e.target.value.split(',') })} />
+            <CustomInput type="text" placeholder="etapes (coma separated)" name="etapes" value={formData.etapes}  onChange={(e) => setFormData({ ...formData, etapes: e.target.value.split(',') })} />
+            <CustomInput type="text" placeholder="ingredients (coma separated)" name="ingredients" value={formData.ingredients}  onChange={(e) => setFormData({ ...formData, ingredients: e.target.value.split(',') })} />
            
 
             <ImgCrop rotationSlider modalProps={{
