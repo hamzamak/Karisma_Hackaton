@@ -8,7 +8,11 @@ function Navbar() {
     const navigate = useNavigate()
     const location = useLocation()
     const dispatch = useDispatch()
-
+    const logOut = () => {
+        dispatch({ type: LOGOUT })
+        navigate('/auth')
+    
+      }
     
   
     useEffect(() => {
@@ -25,11 +29,7 @@ function Navbar() {
   
     }, [location])
   
-    const logOut = () => {
-      dispatch({ type: LOGOUT })
-      navigate('/auth')
-  
-    }
+ 
   return (
     <div>
         
