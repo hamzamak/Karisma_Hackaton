@@ -15,6 +15,7 @@ import { deleteRecetteByID } from '../api'
 import { FaUpload } from 'react-icons/fa'
 import ImgCrop from 'antd-img-crop';
 import { IoFastFood } from "react-icons/io5";
+import Navbar from '../components/Navbar'
 
 
 function Home() {
@@ -186,6 +187,7 @@ function Home() {
 
     return (
       <div className=' p-10'>
+      
         {/* <div className='md:w-[600px] lg:w-[720px] xl:w-full'> */}
         <div className='mb-10 flex flex-row justify-between items-center'>
           <PageIcon icon={<IoFastFood />} />
