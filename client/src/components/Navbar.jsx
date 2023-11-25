@@ -1,6 +1,35 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { LOGOUT } from '../constants/actionTypes'
+import secureLocalStorage from 'react-secure-storage'
+import decode from 'jwt-decode'
 function Navbar() {
+    const navigate = useNavigate()
+    const location = useLocation()
+    const dispatch = useDispatch()
+
+    
+  
+    useEffect(() => {
+  
+      let token = secureLocalStorage.getItem('token')
+  
+      if (token) {
+        const decodedToken = decode(token)
+        if (decodedToken.exp * 1000 < new Date().getTime()) {  // token expired
+          logOut()
+  
+        }
+      }
+  
+    }, [location])
+  
+    const logOut = () => {
+      dispatch({ type: LOGOUT })
+      navigate('/auth')
+  
+    }
   return (
     <div>
         
@@ -20,7 +49,7 @@ function Navbar() {
     <div className="hidden w-full md:block md:w-auto" id="navbar-default">
       <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
         <li>
-          <a href="#" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Deconnexion</a>
+          <a href="#" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page" onClick={logOut}>LogOut</a>
         </li>
         
       </ul>
