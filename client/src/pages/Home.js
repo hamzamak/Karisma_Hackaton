@@ -249,7 +249,7 @@ function Home() {
                 }}
               // the base64 image is in thumb url
               >
-                <Button icon={<FaUpload />} >{!isAddFlag && formData.profil ? "Changer " : "Upload une "} photo de profil</Button>
+                <Button icon={<FaUpload />} >{!isAddFlag && formData.profil ? "Changer " : "Upload une "} photo</Button>
               </Upload>
             </ImgCrop>
 
